@@ -1,0 +1,1 @@
+export const useSpeed = () => useState("useSpeed", () => '750');
