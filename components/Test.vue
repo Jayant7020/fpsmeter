@@ -1,101 +1,241 @@
-<template>
-    <div class="mainDiv">
-     <div id="wrap">
-      <div v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx">{{ fps }}</div>
-     </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        FPSes: [8, 16, 60, 180],
-        ITEM_SPEED: 60,
-        timers: []
-      };
-    },
+<script setup>
+const isOpen=ref(true);
+const selectedValue = useSpeed();
+const boxes = ref(3)
+const FPSes = ref([60,30,3]);
+
+function selectSource() {
+  let arrowIcon = document.getElementById("arrowIcon");
+  let arrowIcon2 = document.getElementById("arrowIcon2");
+  arrowIcon.classList.toggle("rotate");
+  arrowIcon2.classList.toggle("rotate");
+}
+
+function myfunc(){
+let listItems = document.querySelectorAll("ul.alloptions li");
+
+listItems.forEach(function (item) {
+
+   item.onclick = function () {
+   selectedValue.value=item.childNodes[0].innerHTML
+   arrowIcon.classList.toggle("rotate");
+   arrowIcon2.classList.toggle("rotate");
+
+   };
+
+}); 
+}
 
 
-    mounted() {
-      this.FPSes.forEach((fps, idx) => {
-        const x = { value: 0 };
-        const $item = this.$refs['item' + idx][0];
-  
-        const T = this.createTimer(fps, x, $item);
-        this.timers.push(T);
-        T.start();
-      });
-    },
+function changeSpeed() {
+  isOpen.value=true;
+
+  let arrowIcon = document.getElementById("arrowIcon");  
+  let arrowIcon2 = document.getElementById("arrowIcon2");  
+
+  arrowIcon.classList.toggle("rotate");
+  arrowIcon2.classList.toggle("rotate");  
+
+  // console.log(FPSes.value[FPSes.value.length-1])
+ 
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+let xpos = 0;
+let then = Date.now();
+let now;
 
-    methods: {
-      createTimer(fps, x, $item) {
-        const timer = {
-          fps: fps,
-          onTick: (delta) => {
-            if (x.value > 400) return;
-            x.value += this.ITEM_SPEED * delta;
-            $item.style.transform = `translate3d(${x.value}px, 0, 0)`;
-          },
-          start: function () {
-            this.startTime = this.lastTime = performance.now();
-            this.mainloop();
-          },
-          mainloop: function (now) {
-            requestAnimationFrame(this.mainloop.bind(this));
-            const dt = now - this.lastTime;
-            if (dt > 1000 / this.fps) {
-              this.lastTime = now;
-              this.onTick(dt / 1000);
-            }
-          }
-        };
-        return timer;
-      }
+function moveRight(){    
+  let box = document.getElementById("box");
+  let box1 = document.getElementById("item0");
+ 
+
+  if(selectedValue.value > 350 ){
+    xpos += 14;
+    box.style.transform = `translateX(${xpos}px)`;
+
+    if(box1!=null){
+      box1.style.transform = `translateX(${xpos}px)`;
     }
-  };
 
-//   https://blog.canopas.com/how-to-migrate-large-applications-efficiently-from-vue-js-to-nuxt-js-bdd9e41f82a1
-//   https://codepen.io/njmcode/pen/dyxgqR
-  </script>
-  
-  <style scoped>
+  }else{
+    xpos += 1;
+    box.style.transform = `translateX(${xpos}px)`;
 
-.mainDiv {
-  height: 100%;
-  background-image: linear-gradient(#000, #993366);
-  color: #fff;
+    if(box1!=null){
+      box1.style.transform = `translateX(${xpos}px)`;
+    }
+  }    
+
+}
+
+function incre(){
+
+  let inc = FPSes.value[FPSes.value.length-1];
+
+  if(boxes.value < 6){
+   boxes.value += 1;
+   FPSes.value.push(Math.floor(inc/2))
+  }
+}
+
+function decre(){
+  if(boxes.value > 1){
+  boxes.value -= 1;
+  FPSes.value.pop()
+  }
 }
 
 
-#wrap {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
+function moveAnimate() {
+
+  now = Date.now();
+  let diff = now-then;
+
+  if(diff>1000/60){  // FPSes.value[FPSes.value.length-1]      
+    moveRight()
+    then = now
+  }
+
+  let ww = document.body.clientWidth - 450;
+
+  if (xpos < ww) {
+    requestAnimationFrame(moveAnimate);
+  }else{
+    xpos = 0;
+    requestAnimationFrame(moveAnimate);
+  }
 }
 
-/* Specifics */
+onMounted(() => {
+  window.requestAnimationFrame(moveAnimate);
 
-#items {
-  width: 460px;
-  margin: 2em auto;
-  border: 1px solid white;
+});
+
+</script>
+
+
+
+
+
+
+
+
+<template>
+
+<div  class="flex justify-center">
+        <div class="flex justify-center items-center">
+           <p>NUMBER OF TEST :</p>
+           <span class="w-10 h-10 ml-4 border-2 border-black flex justify-center items-center"> {{ boxes }} </span>
+           <div class="flex flex-col ml-4">
+            <button class="w-8 h-8 mb-[1px] text-white border-2 text-lg border-black bg-[#236c7e]" @click="incre()">+</button>
+            <button class="w-8 h-8 text-white border-2 text-lg border-black bg-[#236c7e]" @click="decre()">-</button> 
+           </div>
+        </div>
+
+
+        <div class="flex justify-center items-center ml-8">
+           <p class="mr-4">SPEED :</p>
+
+        <div id="myselector" class="selector flex flex-col items-center justify-center my-8">
+            <div class="w-[150px]" @click="selectSource();  myfunc()">
+             <div class=" bg-[#d9dada]  dark:bg-[#3e3e3e] text-slate-800 dark:text-slate-300" id="selectField" @click="isOpen = !isOpen">
+                <div class="flex items-center">
+                <p class="sm:ml-4 ml-2 md:text-base text-sm" id="selectText">{{ selectedValue }}</p>
+                </div>
+             <div>
+                <img src="~/assets/arrow.png" id="arrowIcon" alt="img" class="myarrow block dark:hidden ml-2"/> 
+                <img src="~/assets/white-arrow.png" id="arrowIcon2" alt="img" class="myarrow hidden dark:block ml-2"/>
+             </div>
+            </div>
+            <ul id="list" :class="{ 'hidden': isOpen }" class="absolute w-[150px] alloptions bg-[#d9dada] text-slate-800">
+            <li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">250</p></li>
+            <li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">350</p></li>
+            <li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">450</p></li>
+            <li @click="changeSpeed(750)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">750</p></li>
+            </ul>
+            </div> 
+        </div>
+        </div>
+    </div>
+
+  <main>
+    <p class="mybox" id="box"></p>
+  </main>
+
+
+  <div class="allFps">  
+    <!-- <div v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx">{{ fps }}</div> -->
+    <div v-for="(fps, idx) in FPSes" :key="idx" :id="'item' + idx">{{ fps }}</div>
+    <!-- <div > {{ FPSes[1] }}</div> -->
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.mybox {
+  /* margin: 1rem; */
+  padding: 1rem;
+  border: 1px solid #999;
+}
+#box {
+  background-color: cornflowerblue;
+  width: 1rem;
+  height: 1rem;
 }
 
-#items div {
-  width: 20px;
-  height: 20px;
-  margin: 20px;
-  background: white;
-  color: black;
-  font-family: monospace;
-  font-size:14px;
+#box2 {
+  background-color: rgb(164, 11, 11);
+  width: 1rem;
+  height: 1rem;
 }
 
-p {
-  line-height: 1.5;
-  font-size: 0.9em;
+
+#selectField {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: border-box;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }
-  </style>
+
+.myarrow {
+  width: 12px;
+  transition: transform 0.5s;
+}
+#list {
+  border-radius: 6px;
+}
+.option {
+  padding: 8px 0 10px 60px;
+  list-style: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
+}
+.option img {
+  width: 25px;
+  position: absolute;
+  top: 18px;
+  left: 25px;
+}
+
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+</style>
