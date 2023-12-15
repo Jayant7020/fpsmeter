@@ -2,7 +2,7 @@
 const isOpen=ref(true);
 const selectedValue = useSpeed();
 const boxes = ref(3)
-const FPSes = ref([60,30,3]);
+const FPSes = ref([60,30,15]);
 
 function selectSource() {
   let arrowIcon = document.getElementById("arrowIcon");
@@ -12,32 +12,24 @@ function selectSource() {
 }
 
 function myfunc(){
-let listItems = document.querySelectorAll("ul.alloptions li");
-
-listItems.forEach(function (item) {
-
-   item.onclick = function () {
-   selectedValue.value=item.childNodes[0].innerHTML
-   arrowIcon.classList.toggle("rotate");
-   arrowIcon2.classList.toggle("rotate");
-
-   };
-
-}); 
+  let listItems = document.querySelectorAll("ul.alloptions li");
+  listItems.forEach(function (item) {
+    item.onclick = function () {
+      selectedValue.value=item.childNodes[0].innerHTML
+      arrowIcon.classList.toggle("rotate");
+      arrowIcon2.classList.toggle("rotate");
+    };
+  }); 
 }
 
 
 function changeSpeed() {
   isOpen.value=true;
-
   let arrowIcon = document.getElementById("arrowIcon");  
   let arrowIcon2 = document.getElementById("arrowIcon2");  
-
   arrowIcon.classList.toggle("rotate");
   arrowIcon2.classList.toggle("rotate");  
-
-  // console.log(FPSes.value[FPSes.value.length-1])
- 
+  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,60 +39,76 @@ let xpos = 0;
 let then = Date.now();
 let now;
 
-function moveRight(){    
+function moveRight(){                                   ////// SPEED TO MOVE IN PIXEL //////
   let box = document.getElementById("box");
-  let box1 = document.getElementById("item0");
- 
+  let box1 = document.querySelectorAll(".item");
 
-  if(selectedValue.value > 350 ){
-    xpos += 14;
-    box.style.transform = `translateX(${xpos}px)`;
-
-    if(box1!=null){
-      box1.style.transform = `translateX(${xpos}px)`;
+  box1.forEach((elem)=>{
+    if(selectedValue.value > 350){
+      xpos += 2 
+      box.style.transform = `translateX(${xpos}px)`;
+      elem.style.transform = `translateX(${xpos}px)`;
+    }else{
+      xpos += 1 
+      box.style.transform = `translateX(${xpos}px)`;
+      elem.style.transform = `translateX(${xpos}px)`;
     }
+    
+    
+    
+    
+    
+    
+    
+    // if(selectedValue.value >= 450){
+    //   xpos += 1 
+    //   box.style.transform = `translateX(${xpos}px)`;
+    //   elem.style.transform = `translateX(${xpos}px)`;
+    // }else if(selectedValue.value = 350){
+    //   xpos += 1 
+    //   box.style.transform = `translateX(${xpos}px)`;
+    //   elem.style.transform = `translateX(${xpos}px)`;
+    // }else if(selectedValue.value == 250){
+    //   xpos += 1 
+    //   box.style.transform = `translateX(${xpos}px)`;
+    //   elem.style.transform = `translateX(${xpos}px)`;
+    // }
 
-  }else{
-    xpos += 1;
-    box.style.transform = `translateX(${xpos}px)`;
 
-    if(box1!=null){
-      box1.style.transform = `translateX(${xpos}px)`;
-    }
-  }    
 
+  })   
 }
 
 function incre(){
-
-  let inc = FPSes.value[FPSes.value.length-1];
-
+  
+  let inc = Math.floor(FPSes.value[FPSes.value.length-1]/2);
+  
   if(boxes.value < 6){
-   boxes.value += 1;
-   FPSes.value.push(Math.floor(inc/2))
+    boxes.value += 1;
+    FPSes.value.push(inc)
   }
 }
 
 function decre(){
   if(boxes.value > 1){
-  boxes.value -= 1;
-  FPSes.value.pop()
+    boxes.value -= 1;
+    FPSes.value.pop()
   }
 }
 
 
-function moveAnimate() {
-
+function moveAnimate() {                               ////// SPEED TO MOVE IN FPS //////
   now = Date.now();
   let diff = now-then;
+  let fps = 60;
 
-  if(diff>1000/60){  // FPSes.value[FPSes.value.length-1]      
+  
+  if(diff>1000/fps){   
     moveRight()
     then = now
   }
 
   let ww = document.body.clientWidth - 450;
-
   if (xpos < ww) {
     requestAnimationFrame(moveAnimate);
   }else{
@@ -109,9 +117,9 @@ function moveAnimate() {
   }
 }
 
+
 onMounted(() => {
   window.requestAnimationFrame(moveAnimate);
-
 });
 
 </script>
@@ -167,9 +175,7 @@ onMounted(() => {
 
 
   <div class="allFps">  
-    <!-- <div v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx">{{ fps }}</div> -->
-    <div v-for="(fps, idx) in FPSes" :key="idx" :id="'item' + idx">{{ fps }}</div>
-    <!-- <div > {{ FPSes[1] }}</div> -->
+    <div v-for="(fps, idx) in FPSes" :key="idx" :class="'item ' + idx">{{ fps }}</div>
   </div>
 </template>
 
