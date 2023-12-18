@@ -1,142 +1,19 @@
-<script setup>
-const isOpen=ref(true);
-// const FPSes = ref([60,30,15]);
-
-function selectSource() {
-  let arrowIcon = document.getElementById("arrowIcon");
-  let arrowIcon2 = document.getElementById("arrowIcon2");
-  arrowIcon.classList.toggle("rotate");
-  arrowIcon2.classList.toggle("rotate");
-}
-
-function myfunc(){
-  let listItems = document.querySelectorAll("ul.alloptions li");
-  listItems.forEach(function (item) {
-    item.onclick = function () {
-      selectedValue.value=item.childNodes[0].innerHTML
-      arrowIcon.classList.toggle("rotate");
-      arrowIcon2.classList.toggle("rotate");
-    };
-  }); 
-}
-
-function changeSpeed() {
-  isOpen.value=true;
-  let arrowIcon = document.getElementById("arrowIcon");  
-  let arrowIcon2 = document.getElementById("arrowIcon2");  
-  arrowIcon.classList.toggle("rotate");
-  arrowIcon2.classList.toggle("rotate");  
-  
-}
-
-////////////////////////////////////////////////////////////////////////////////////
-
-let x = 0;
-const selectedValue = useSpeed();
-
-function moveROne(){
-  if(selectedValue.value > 350){
-      x += 5 
-      box1.style.transform = `translateX(${x}px)`;
-      // box2.style.transform = `translateX(${x}px)`;
-    }else{
-      x += 1 
-      box1.style.transform = `translateX(${x}px)`;
-      // box2.style.transform = `translateX(${x}px)`;
-    }
-}
-
-function moveRTwo(){
-  if(selectedValue.value > 350){
-      x += 5 
-      box2.style.transform = `translateX(${x}px)`;
-    }else{
-      x += 1 
-      box2.style.transform = `translateX(${x}px)`;
-    }
-}
-
-function moveRThree(){
-  if(selectedValue.value > 350){
-      x += 5 
-      box3.style.transform = `translateX(${x}px)`;
-    }else{
-      x += 1 
-      box3.style.transform = `translateX(${x}px)`;
-    }
-}
-
-function moveRFour(){
-  if(selectedValue.value > 350){
-      x += 5 
-      box4.style.transform = `translateX(${x}px)`;
-    }else{
-      x += 1 
-      box4.style.transform = `translateX(${x}px)`;
-    }
-}
-
-function moveRFive(){
-  if(selectedValue.value > 350){
-      x += 5 
-      box5.style.transform = `translateX(${x}px)`;
-    }else{
-      x += 1 
-      box5.style.transform = `translateX(${x}px)`;
-    }
-}
-
-
-function fpsController(cbf,fps){
-  this.cbf=cbf;
-  this.fps=fps;
-  this.then=Date.now();
-  this.animate=()=>{
-    this.now = Date.now();
-    this.diff = this.now - this.then;
-    if(this.diff > 1000/this.fps){
-      this.cbf();
-      this.then=this.now;
-    }
-    requestAnimationFrame(this.animate);
-  }
-  this.animate();
-}
-
-
-// function firstFunc(){
-// // function who create new fpsController and push in secondFunc
-
-//   FPSes.value.forEach((elem)=>{
-//     new fpsController(elem,60)
-//   })
-// }
-
-// function secondFunc(){
-  
-// }
-
-onMounted(()=>{
-  // fpsSelector(moveROne,60);
-  // fpsSelector(moveRTwo,30)
-
-  new fpsController(moveROne,60);
-  new fpsController(moveRTwo,30)
-  new fpsController(moveRThree,15);
-  new fpsController(moveRFour,7)
-  new fpsController(moveRFive,3);
-
-  // firstFunc()
-
-})
-
-
-</script>
-
 <template>
   <div>
- 
-    <div class="flex justify-center items-center ml-8">        
+    <div class="mainDiv">
+
+      <div  class="flex justify-center">
+        <div class="flex justify-center items-center">
+           <p>NUMBER OF TEST :</p>
+           <span class="w-10 h-10 ml-4 border-2 border-black flex justify-center items-center"> {{ boxes }} </span>
+           <div class="flex flex-col ml-4">
+            <button class="w-8 h-8 mb-[1px] text-white border-2 text-lg border-black bg-[#236c7e]" @click="incre()">+</button>
+            <button class="w-8 h-8 text-white border-2 text-lg border-black bg-[#236c7e]" @click="decre()">-</button> 
+           </div>
+        </div>
+
+
+        <div class="flex justify-center items-center ml-8">
            <p class="mr-4">SPEED :</p>
         <div id="myselector" class="selector flex flex-col items-center justify-center my-8">
           <div class="w-[150px]" @click="selectSource();  myfunc()">
@@ -157,29 +34,127 @@ onMounted(()=>{
             	</ul>
             </div> 
         </div>
+        </div>
+
     </div>
 
-    <div id="box1" class="w-10 h-10 bg-black text-white mb-3">60</div>
-    <div id="box2" class="w-10 h-10 bg-black text-white mb-3">30</div>
-
-    <div id="box3" class="w-10 h-10 bg-black text-white mb-3">15</div>
-    <div id="box4" class="w-10 h-10 bg-black text-white mb-3">7</div>
-
-    <div id="box5" class="w-10 h-10 bg-black text-white mb-3">3</div>
-
-    <!-- <div v-for="(fps, idx) in FPSes" :key="idx" :class="'item ' + idx">{{ fps }}</div> -->
-
+      <div id="wrap">
+        <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> {{ fps }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 
+<script>
+export default {
+  data() {
+    return {
+      FPSes: [60, 30, 15],
+      ITEM_SPEED: 100,
+      timers: [],
+      boxes : 3,
+      selectedValue:250,
+      isOpen : true
+    };
+  },
+  mounted() {
+    this.FPSes.forEach((fps, idx) => {
+      const x = { value: 0 };
+      const $item = this.$refs["item" + idx][0];
+      const T = this.createTimer(fps, x, $item);
+      this.timers.push(T);
+      T.start();
+    });
+  },
+
+  methods: {
+    createTimer(fps, x, $item) {
+      const timer = {
+        fps: fps,
+        onTick: (delta) => {
+          if (x.value > 600) {
+            x.value = 0;
+          }
+          x.value += this.ITEM_SPEED * delta;
+          $item.style.transform = `translateX(${x.value}px)`;
+        },
+        start: function () {
+          this.startTime = this.lastTime = performance.now();
+          this.mainloop();
+        },
+        mainloop: function (now) {
+          requestAnimationFrame(this.mainloop.bind(this))
+          const dt = now - this.lastTime;
+          if (dt > 1000 / this.fps) {
+            this.lastTime = now;
+            this.onTick(dt / 1000);
+          }
+        },
+      };
+      return timer;
+    },
+
+    incre(){  
+    let inc = Math.floor(this.FPSes[this.FPSes.length-1]/2);
+      if(this.boxes < 6){
+       this.boxes += 1;
+       this.FPSes.push(inc)
+      }
+    },
+    decre(){
+     if(this.boxes > 1){
+       this.boxes -= 1;
+       this.FPSes.pop()
+     }
+    },
+
+    selectSource() {
+     let arrowIcon = document.getElementById("arrowIcon");
+     let arrowIcon2 = document.getElementById("arrowIcon2");
+     arrowIcon.classList.toggle("rotate");
+     arrowIcon2.classList.toggle("rotate");
+    },
+    myfunc(){
+     let listItems = document.querySelectorAll("ul.alloptions li");
+     listItems.forEach(function (item) {
+       item.onclick = function () {
+        this.selectedValue=this.item.childNodes[0].innerHTML;
+        arrowIcon.classList.toggle("rotate");
+        arrowIcon2.classList.toggle("rotate");
+        };
+     }); 
+    },
+    changeSpeed() {
+      this.isOpen=true;
+      let arrowIcon = document.getElementById("arrowIcon");  
+      let arrowIcon2 = document.getElementById("arrowIcon2");  
+      arrowIcon.classList.toggle("rotate");
+      arrowIcon2.classList.toggle("rotate");   
+    }
+
+  },
+
+};
+</script>
+
 <style scoped>
+.mybox {
+  /* margin: 1rem; */
+  padding: 1rem;
+  border: 1px solid #999;
+}
 #box {
   background-color: cornflowerblue;
   width: 1rem;
   height: 1rem;
 }
 
+#box2 {
+  background-color: rgb(164, 11, 11);
+  width: 1rem;
+  height: 1rem;
+}
 
 #selectField {
   width: 100%;
@@ -219,19 +194,3 @@ onMounted(()=>{
 
 </style>
 
-
-
-<!-- let then=Date.now();
-let now;
-function fpsSelector(cbf,fps){
-    let animate=()=>{
-    now = Date.now();
-    let diff = now - then;
-    if(diff > 1000/fps){
-      cbf();
-      then=now;
-    }
-    requestAnimationFrame(animate);
-  }
-  animate();
-} -->
