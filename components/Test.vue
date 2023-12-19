@@ -13,7 +13,7 @@
         </div>
 
 
-        <div class="flex justify-center items-center ml-8">
+       <div class="flex justify-center items-center ml-8">
            <p class="mr-4">SPEED :</p>
         <div id="myselector" class="selector flex flex-col items-center justify-center my-8">
           <div class="w-[150px]" @click="selectSource();  myfunc()">
@@ -26,7 +26,7 @@
                   <img src="~/assets/white-arrow.png" id="arrowIcon2" alt="img" class="myarrow hidden dark:block ml-2"/>
                   </div>
                </div>
-            	<ul id="list" :class="{ 'hidden': isOpen }" class="absolute w-[150px] alloptions bg-[#d9dada] text-slate-800">
+            	<ul id="list" :class="{ 'hidden': isOpen }" class="relative w-[150px] alloptions bg-[#d9dada] text-slate-800">
             	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">250</p></li>
             	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">350</p></li>
             	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">450</p></li>
@@ -35,12 +35,25 @@
             </div> 
         </div>
         </div>
-
     </div>
 
       <div id="wrap">
-        <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> {{ fps }}</div>
+        <!-- <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> {{ fps }}</div> -->
+       
+        <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> 
+          
+          <!-- <img src="`~/assets/img1.jpg`" alt="ufoImg"/> -->
+         
+
+         <!-- <img class="bg-repeat-x bg-center" :src="`/img/${img1}`" alt="ufoImg"/> -->
+        </div>
+
+
+        <div class="bg-repeat-x bg-center imgDiv" >
+        </div>
+
       </div>
+
     </div>
   </div>
 </template>
@@ -50,8 +63,8 @@
 export default {
   data() {
     return {
-      FPSes: [60, 30, 15],
-      ITEM_SPEED: 100,
+      FPSes: [60,30,15],
+      ITEM_SPEED: 50,
       timers: [],
       boxes : 3,
       selectedValue:250,
@@ -77,7 +90,9 @@ export default {
             x.value = 0;
           }
           x.value += this.ITEM_SPEED * delta;
+
           $item.style.transform = `translateX(${x.value}px)`;
+          // $item.style.backgroundRepeat = "repeat-x"
         },
         start: function () {
           this.startTime = this.lastTime = performance.now();
@@ -95,13 +110,35 @@ export default {
       return timer;
     },
 
+    startNewTimers(){
+     const newFPSIndex = this.FPSes.length-1;
+     const newFPS = this.FPSes[newFPSIndex];
+
+
+     this.$nextTick(()=>{
+       const $item = this.$refs["item" + newFPSIndex];
+       if($item && $item.length > 0){
+        const firstItem = document.getElementById("item0").style.transform;
+        let val = parseFloat(firstItem.match(/-?\d+\.?\d*/));
+        const x = { value: val }
+       const newTimer = this.createTimer(newFPS,x,$item[0]);
+       this.timers.push(newTimer);
+       newTimer.start();
+       }else{
+       console.log("Error")
+       }
+     })
+    },
+
     incre(){  
     let inc = Math.floor(this.FPSes[this.FPSes.length-1]/2);
       if(this.boxes < 6){
        this.boxes += 1;
-       this.FPSes.push(inc)
+       this.FPSes.push(inc);
+       this.startNewTimers()
       }
     },
+
     decre(){
      if(this.boxes > 1){
        this.boxes -= 1;
@@ -115,17 +152,31 @@ export default {
      arrowIcon.classList.toggle("rotate");
      arrowIcon2.classList.toggle("rotate");
     },
+
     myfunc(){
      let listItems = document.querySelectorAll("ul.alloptions li");
      listItems.forEach(function (item) {
        item.onclick = function () {
-        this.selectedValue=this.item.childNodes[0].innerHTML;
+        // this.selectedValue=this.item.childNodes[0].innerHTML;
         arrowIcon.classList.toggle("rotate");
         arrowIcon2.classList.toggle("rotate");
         };
      }); 
     },
-    changeSpeed() {
+    
+    changeSpeed(option) {
+      this.selectedValue=option;
+
+      if(this.selectedValue==250){
+        this.ITEM_SPEED = 50
+      }else if(this.selectedValue==350){
+        this.ITEM_SPEED = 100
+      }else if(this.selectedValue==450){
+        this.ITEM_SPEED = 150
+      }else if(this.selectedValue==750){
+        this.ITEM_SPEED = 250
+      }
+
       this.isOpen=true;
       let arrowIcon = document.getElementById("arrowIcon");  
       let arrowIcon2 = document.getElementById("arrowIcon2");  
@@ -134,26 +185,17 @@ export default {
     }
 
   },
-
 };
 </script>
 
 <style scoped>
-.mybox {
-  /* margin: 1rem; */
-  padding: 1rem;
-  border: 1px solid #999;
-}
-#box {
-  background-color: cornflowerblue;
-  width: 1rem;
-  height: 1rem;
-}
 
-#box2 {
-  background-color: rgb(164, 11, 11);
-  width: 1rem;
-  height: 1rem;
+
+.imgDiv{
+  background-image: url("assets/img1.jpg");
+  /* background: cover;
+  background-size: cover; */
+  background-repeat: no-repeat;
 }
 
 #selectField {
@@ -194,3 +236,47 @@ export default {
 
 </style>
 
+<!-- export default {
+  data() {
+    return {
+      FPSes: [8, 16, 60],
+      ITEM_SPEED: 80,
+      timers: []
+    };
+  },
+  mounted() {
+    this.startTimers();
+  },
+  methods: {
+    startTimers() {
+      this.FPSes.forEach((fps, idx) => {
+        const x = { value: 0 };
+        const $item = this.$refs['item' + idx][0];
+
+        const T = this.createTimer(fps, x, $item);
+        this.timers.push(T);
+        T.start();
+      });
+    },
+    createTimer(fps, x, $item) {
+      const timer = {
+        // ... (existing timer code)
+      };
+      return timer;
+    },
+    addFPS(newFPS) {
+      this.FPSes.push(newFPS);
+      const x = { value: 0 };
+      const $item = this.$refs['item' + (this.FPSes.length - 1)][0];
+      const T = this.createTimer(newFPS, x, $item);
+      this.timers.push(T);
+      T.start();
+    },
+    removeFPS(index) {
+      if (index >= 0 && index < this.FPSes.length) {
+        this.FPSes.splice(index, 1);
+        this.timers.splice(index, 1);
+      }
+    }
+  }
+}; -->
