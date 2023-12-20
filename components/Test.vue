@@ -26,7 +26,7 @@
                   <img src="~/assets/white-arrow.png" id="arrowIcon2" alt="img" class="myarrow hidden dark:block ml-2"/>
                   </div>
                </div>
-            	<ul id="list" :class="{ 'hidden': isOpen }" class="relative w-[150px] alloptions bg-[#d9dada] text-slate-800">
+            	<ul id="list" :class="{ 'hidden': isOpen }" class="absolute z-50 w-[150px] alloptions bg-[#d9dada] text-slate-800">
             	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">250</p></li>
             	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">350</p></li>
             	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">450</p></li>
@@ -37,21 +37,14 @@
         </div>
     </div>
 
-      <div id="wrap">
-        <!-- <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> {{ fps }}</div> -->
-       
-        <div class="flex items-start" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> 
-          
-          <!-- <img src="`~/assets/img1.jpg`" alt="ufoImg"/> -->
-         
+      <div id="wrap" class="border-2 border-black">
 
-         <!-- <img class="bg-repeat-x bg-center" :src="`/img/${img1}`" alt="ufoImg"/> -->
+
+        <div class="h-[110px]" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> 
+          <div class="shaper"> </div>
         </div>
-
-
-        <div class="bg-repeat-x bg-center imgDiv" >
-        </div>
-
+      
+      
       </div>
 
     </div>
@@ -74,25 +67,58 @@ export default {
   mounted() {
     this.FPSes.forEach((fps, idx) => {
       const x = { value: 0 };
-      const $item = this.$refs["item" + idx][0];
+      // const $item = this.$refs["item" + idx][0];
+      const $item = document.getElementById("item"+idx);
       const T = this.createTimer(fps, x, $item);
       this.timers.push(T);
       T.start();
     });
   },
 
+// const $item = document.getElementById("item" + idx);
+// const $shaper = $item.querySelector('.shaper');
+// const wrapWidth = $item.offsetWidth;
+// const imageWidth = /* Your image width */; 
+// const maxTranslation = imageWidth - wrapWidth;
+
+// if (maxTranslation > 0) {
+//   if (x.value > maxTranslation) {
+//     x.value = 0;
+//   }
+// } else {
+//   x.value = 0;
+// }
+
+// $shaper.style.transform = `translateX(-${x.value}px)`; 
+
+
   methods: {
     createTimer(fps, x, $item) {
       const timer = {
         fps: fps,
         onTick: (delta) => {
-          if (x.value > 600) {
+         
+        // const $shaper = $item.querySelector('.shaper');
+        // const wrapWidth = $item.offsetWidth;
+        // const imageWidth =   0;  
+        // const maxTranslation = imageWidth - wrapWidth;
+
+        // if (maxTranslation > 0) {
+        //  if (x.value > maxTranslation) {
+        //     x.value = 0;
+        //   }
+        // } else {
+        // x.value = 0;
+        // }
+
+        if (x.value > 300) {
             x.value = 0;
           }
-          x.value += this.ITEM_SPEED * delta;
 
+          x.value += this.ITEM_SPEED * delta;
           $item.style.transform = `translateX(${x.value}px)`;
-          // $item.style.backgroundRepeat = "repeat-x"
+          // $item.querySelector(".shaper").style.transform = `translateX(${x.value}px)`;
+          // $shaper.style.transform = `translateX(${x.value}px)`;
         },
         start: function () {
           this.startTime = this.lastTime = performance.now();
@@ -121,9 +147,9 @@ export default {
         const firstItem = document.getElementById("item0").style.transform;
         let val = parseFloat(firstItem.match(/-?\d+\.?\d*/));
         const x = { value: val }
-       const newTimer = this.createTimer(newFPS,x,$item[0]);
-       this.timers.push(newTimer);
-       newTimer.start();
+        const newTimer = this.createTimer(newFPS,x,$item[0]);
+        this.timers.push(newTimer);
+        newTimer.start();
        }else{
        console.log("Error")
        }
@@ -157,7 +183,6 @@ export default {
      let listItems = document.querySelectorAll("ul.alloptions li");
      listItems.forEach(function (item) {
        item.onclick = function () {
-        // this.selectedValue=this.item.childNodes[0].innerHTML;
         arrowIcon.classList.toggle("rotate");
         arrowIcon2.classList.toggle("rotate");
         };
@@ -168,7 +193,7 @@ export default {
       this.selectedValue=option;
 
       if(this.selectedValue==250){
-        this.ITEM_SPEED = 50
+        this.ITEM_SPEED = 50;
       }else if(this.selectedValue==350){
         this.ITEM_SPEED = 100
       }else if(this.selectedValue==450){
@@ -190,12 +215,17 @@ export default {
 
 <style scoped>
 
+.shaper {
+  background: url('~/assets/img1.jpg') repeat 0 0 ;
+  width: 100%;
+  height: 110px;
+  animation: slide 5s linear infinite;
+}
 
-.imgDiv{
-  background-image: url("assets/img1.jpg");
-  /* background: cover;
-  background-size: cover; */
-  background-repeat: no-repeat;
+
+@keyframes slide {
+    from { background-position: 0 0; }
+    to { background-position: 900px 0px; }
 }
 
 #selectField {
@@ -236,47 +266,22 @@ export default {
 
 </style>
 
-<!-- export default {
-  data() {
-    return {
-      FPSes: [8, 16, 60],
-      ITEM_SPEED: 80,
-      timers: []
-    };
-  },
-  mounted() {
-    this.startTimers();
-  },
-  methods: {
-    startTimers() {
-      this.FPSes.forEach((fps, idx) => {
-        const x = { value: 0 };
-        const $item = this.$refs['item' + idx][0];
 
-        const T = this.createTimer(fps, x, $item);
-        this.timers.push(T);
-        T.start();
-      });
-    },
-    createTimer(fps, x, $item) {
-      const timer = {
-        // ... (existing timer code)
-      };
-      return timer;
-    },
-    addFPS(newFPS) {
-      this.FPSes.push(newFPS);
-      const x = { value: 0 };
-      const $item = this.$refs['item' + (this.FPSes.length - 1)][0];
-      const T = this.createTimer(newFPS, x, $item);
-      this.timers.push(T);
-      T.start();
-    },
-    removeFPS(index) {
-      if (index >= 0 && index < this.FPSes.length) {
-        this.FPSes.splice(index, 1);
-        this.timers.splice(index, 1);
-      }
-    }
+
+
+<!-- const $item = document.getElementById("item" + idx);
+const $shaper = $item.querySelector('.shaper');
+const wrapWidth = $item.offsetWidth;
+const imageWidth = /* Your image width */; // Set your image width here
+const maxTranslation = imageWidth - wrapWidth;
+
+// Modify the translation
+if (maxTranslation > 0) {
+  if (x.value > maxTranslation) {
+    x.value = 0;
   }
-}; -->
+} else {
+  x.value = 0; // Reset translation if image width is smaller than wrap width
+}
+
+$shaper.style.transform = `translateX(-${x.value}px)`; -->
