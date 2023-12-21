@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="mainDiv">
-
-      <div  class="flex justify-center">
+    <div  class="flex justify-center">
         <div class="flex justify-center items-center">
            <p>NUMBER OF TEST :</p>
            <span class="w-10 h-10 ml-4 border-2 border-black flex justify-center items-center"> {{ boxes }} </span>
@@ -37,27 +35,25 @@
         </div>
     </div>
 
-      <div id="wrap" class="border-2 border-black">
 
-
-        <div class="h-[110px]" v-for="(fps, idx) in FPSes" :key="idx" :ref="'item' + idx" :id="'item' + idx"> 
-          <div class="shaper"> </div>
-        </div>
+    <div class="wrap overflow-hidden bg-black">
       
-      
-      </div>
+      <!-- <div v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item">
+        <img  src="~/assets/UFO.png"/>
+      </div> -->
 
+      <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
     </div>
+    
   </div>
 </template>
-
 
 <script>
 export default {
   data() {
     return {
-      FPSes: [60,30,15],
       ITEM_SPEED: 50,
+      FPSes: [60,30,15],
       timers: [],
       boxes : 3,
       selectedValue:250,
@@ -66,99 +62,72 @@ export default {
   },
   mounted() {
     this.FPSes.forEach((fps, idx) => {
-      const x = { value: 0 };
-      // const $item = this.$refs["item" + idx][0];
-      const $item = document.getElementById("item"+idx);
-      const T = this.createTimer(fps, x, $item);
+      let x = 0;
+      const $item = this.$refs.items[idx];
+      // $item.textContent = fps;
+
+      const T = new Timer({
+        fps: fps,
+        onTick: delta => {
+          let wrap = document.querySelector(".wrap").clientWidth-80;
+          if (x > wrap) {
+            x = 0;
+          }
+          // let myItem = document.querySelector(".item").offsetWidth;
+          // console.log(myItem)
+
+          x += this.ITEM_SPEED * delta;
+          $item.style.transform = `translate3d(${x}px, 0, 0)`;
+
+        }
+      });
+
       this.timers.push(T);
       T.start();
     });
   },
 
-// const $item = document.getElementById("item" + idx);
-// const $shaper = $item.querySelector('.shaper');
-// const wrapWidth = $item.offsetWidth;
-// const imageWidth = /* Your image width */; 
-// const maxTranslation = imageWidth - wrapWidth;
-
-// if (maxTranslation > 0) {
-//   if (x.value > maxTranslation) {
-//     x.value = 0;
-//   }
-// } else {
-//   x.value = 0;
-// }
-
-// $shaper.style.transform = `translateX(-${x.value}px)`; 
-
-
   methods: {
-    createTimer(fps, x, $item) {
-      const timer = {
-        fps: fps,
-        onTick: (delta) => {
-         
-          if (x.value > 200) {
-            x.value = 0;
-          }
-
-          x.value += this.ITEM_SPEED * delta;
-
-          // $item.style.transform = `translateX(${x.value}px)`;
-          $item.querySelector(".shaper").style.transform = `translateX(${x.value}px)`;
-        },
-        start: function () {
-          this.startTime = this.lastTime = performance.now();
-          this.mainloop();
-        },
-        mainloop: function (now) {
-          requestAnimationFrame(this.mainloop.bind(this))
-          const dt = now - this.lastTime;
-          if (dt > 1000 / this.fps) {
-            this.lastTime = now;
-            this.onTick(dt / 1000);
-          }
-        },
-      };
-      return timer;
-    },
-
-    startNewTimers(){
-     const newFPSIndex = this.FPSes.length-1;
-     const newFPS = this.FPSes[newFPSIndex];
-
-
-     this.$nextTick(()=>{
-       const $item = this.$refs["item" + newFPSIndex];
-       if($item && $item.length > 0){
-        const firstItem = document.getElementById("item0").style.transform;
-        let val = parseFloat(firstItem.match(/-?\d+\.?\d*/));
-        const x = { value: val }
-        const newTimer = this.createTimer(newFPS,x,$item[0]);
-        this.timers.push(newTimer);
-        newTimer.start();
-       }else{
-       console.log("Error")
-       }
-     })
-    },
-
-    incre(){  
-    let inc = Math.floor(this.FPSes[this.FPSes.length-1]/2);
+    incre() {
       if(this.boxes < 6){
+      let inc = Math.floor(this.FPSes[this.FPSes.length-1]/2);
+      this.FPSes.push(inc); 
        this.boxes += 1;
-       this.FPSes.push(inc);
-       this.startNewTimers()
-      }
+       this.$nextTick(() => {
+        this.startNewTimer(); 
+      });
+    }
+    },
+    
+    decre() {
+      this.FPSes.pop();
+      this.timers.pop().stop(); 
     },
 
-    decre(){
-     if(this.boxes > 1){
-       this.boxes -= 1;
-       this.FPSes.pop()
-     }
-    },
+    startNewTimer() {
+      const idx = this.FPSes.length - 1;
+      const fps = this.FPSes[idx];
 
+      let x = 0;
+      const $item = this.$refs.items[idx];
+
+      const T = new Timer({
+        fps: fps,
+        onTick: delta => {
+          let wrap = document.querySelector(".wrap").clientWidth - 100;
+          if (x > wrap) {
+            x = 0;
+          }
+   
+          x += this.ITEM_SPEED * delta;
+          $item.style.transform = `translate3d(${x}px, 0, 0)`;
+
+        }
+      });
+
+      this.timers.push(T);
+      T.start();
+    },
     selectSource() {
      let arrowIcon = document.getElementById("arrowIcon");
      let arrowIcon2 = document.getElementById("arrowIcon2");
@@ -184,9 +153,9 @@ export default {
       }else if(this.selectedValue==350){
         this.ITEM_SPEED = 100
       }else if(this.selectedValue==450){
-        this.ITEM_SPEED = 150
-      }else if(this.selectedValue==750){
         this.ITEM_SPEED = 250
+      }else if(this.selectedValue==750){
+        this.ITEM_SPEED = 450
       }
 
       this.isOpen=true;
@@ -195,25 +164,48 @@ export default {
       arrowIcon.classList.toggle("rotate");
       arrowIcon2.classList.toggle("rotate");   
     }
+  }
 
-  },
 };
+
+class Timer {
+  constructor(options) {
+    this.fps = options.fps || 16;
+    this.onTick = options.onTick || function (dt) {};
+    this._frameInterval = 1000 / this.fps;
+  }
+
+  start() {
+    this.startTime = this.lastTime = window.performance.now();
+    this.mainloop();
+  }
+
+  mainloop(now) {
+    requestAnimationFrame(this.mainloop.bind(this));
+
+    const dt = now - this.lastTime;
+
+    if (dt > this._frameInterval) {
+      this.lastTime = now;
+      this.onTick(dt / 1000);
+    }
+  }
+}
 </script>
 
 <style scoped>
 
-.shaper {
+/* .shaper {
   background: url('~/assets/img1.jpg') repeat 0 0 ;
   width: 100%;
   height: 110px;
   animation: slide 5s linear infinite;
 }
 
-
 @keyframes slide {
     from { background-position: 0 0; }
-    to { background-position: 900px 0px; }
-}
+    to { background-position: 893px 0px; }
+} */
 
 #selectField {
   width: 100%;
@@ -252,23 +244,3 @@ export default {
 }
 
 </style>
-
-
-
-
-<!-- const $item = document.getElementById("item" + idx);
-const $shaper = $item.querySelector('.shaper');
-const wrapWidth = $item.offsetWidth;
-const imageWidth = /* Your image width */; // Set your image width here
-const maxTranslation = imageWidth - wrapWidth;
-
-// Modify the translation
-if (maxTranslation > 0) {
-  if (x.value > maxTranslation) {
-    x.value = 0;
-  }
-} else {
-  x.value = 0; // Reset translation if image width is smaller than wrap width
-}
-
-$shaper.style.transform = `translateX(-${x.value}px)`; -->
