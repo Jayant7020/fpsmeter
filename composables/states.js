@@ -1,1 +1,2 @@
-export const useSpeed = () => useState("useSpeed", () => '250');
+export const useFps = () => useState("useFps", () => '');
+

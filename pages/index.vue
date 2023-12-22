@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="max-w-screen-lg m-auto items-center w-full p-2">
+    <div class="max-w-screen-2xl m-auto items-center w-full p-2">
       <!-- <Hero/> -->
       <Test/>
       <h2 class="m-10 flex justify-center font-bold text-2xl">What Is Frame Rate?</h2>

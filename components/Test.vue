@@ -1,48 +1,58 @@
 <template>
   <div>
-    <div  class="flex justify-center">
-        <div class="flex justify-center items-center">
-           <p>NUMBER OF TEST :</p>
-           <span class="w-10 h-10 ml-4 border-2 border-black flex justify-center items-center"> {{ boxes }} </span>
+
+    <NewTest/>
+
+    <div  class="flex justify-center my-20">
+        <div class="flex justify-center items-center mr-10">
+           <p class="text-xl font-semibold">NUMBER OF TEST :</p>
+           <span class="w-14 h-12 ml-4 border-2 border-black rounded-md flex justify-center items-center text-xl font-semibold"> {{ boxes }} </span>
            <div class="flex flex-col ml-4">
-            <button class="w-8 h-8 mb-[1px] text-white border-2 text-lg border-black bg-[#236c7e]" @click="incre()">+</button>
-            <button class="w-8 h-8 text-white border-2 text-lg border-black bg-[#236c7e]" @click="decre()">-</button> 
+            <button class="w-10 h-11 mb-[3px] text-white rounded-sm text-2xl border-black bg-[#236c7e]" @click="incre()">+</button>
+            <button class="w-10 h-11 text-white rounded-sm text-2xl border-black bg-[#236c7e]" @click="decre()">-</button> 
            </div>
         </div>
 
 
        <div class="flex justify-center items-center ml-8">
-           <p class="mr-4">SPEED :</p>
+           <p class="mr-4 text-xl font-semibold">SPEED :</p>
         <div id="myselector" class="selector flex flex-col items-center justify-center my-8">
           <div class="w-[150px]" @click="selectSource();  myfunc()">
-               <div class=" bg-[#d9dada]  dark:bg-[#3e3e3e] text-slate-800 dark:text-slate-300" id="selectField" @click="isOpen = !isOpen">
+               <div class=" bg-[#d9dada]  dark:bg-[#3e3e3e] text-slate-900 dark:text-slate-300" id="selectField" @click="isOpen = !isOpen">
                   <div class="flex items-center">
-                  <p class="sm:ml-4 ml-2 md:text-base text-sm" id="selectText">{{ selectedValue }}</p>
+                  <p class="sm:ml-4 ml-2 md:text-lg text-sm" id="selectText">{{ selectedValue }}</p>
                   </div>
                   <div>
                   <img src="~/assets/arrow.png" id="arrowIcon" alt="img" class="myarrow block dark:hidden ml-2"/> 
                   <img src="~/assets/white-arrow.png" id="arrowIcon2" alt="img" class="myarrow hidden dark:block ml-2"/>
                   </div>
                </div>
-            	<ul id="list" :class="{ 'hidden': isOpen }" class="absolute z-50 w-[150px] alloptions bg-[#d9dada] text-slate-800">
-            	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">250</p></li>
-            	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">350</p></li>
-            	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">450</p></li>
-            	<li @click="changeSpeed(750)" class="option hover:bg-[#236c7e]"><p class="md:text-base text-sm">750</p></li>
+            	<ul id="list" :class="{ 'hidden': isOpen }" class="absolute z-50 w-[150px] alloptions bg-[#d9dada] dark:bg-[#3e3e3e] text-slate-900 dark:text-slate-300">
+            	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">250</p></li>
+            	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">350</p></li>
+            	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">450</p></li>
+            	<li @click="changeSpeed(750)" class="option hover:bg-[#236c7e] hover:rounded-b-[6px]"><p class="md:text-lg text-sm">750</p></li>
             	</ul>
             </div> 
         </div>
         </div>
     </div>
 
-
-    <div class="wrap overflow-hidden bg-black">
-      
-      <!-- <div v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item">
-        <img  src="~/assets/UFO.png"/>
-      </div> -->
-
+    <div class="wrap overflow-hidden bg-black mb-20 ">  
+       <!-- <p v-for="(fps, idx) in FPSes" class="text-white">
+        {{ fps }}
+      </p>
       <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
+      -->
+    
+      <!-- <div class="flex"> 
+       <p v-for="(fps, idx) in FPSes" class="text-white">
+        {{ fps }}
+      </p>
+      <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
+     </div> -->
+     
+     <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
     </div>
     
   </div>
@@ -60,24 +70,28 @@ export default {
       isOpen : true
     };
   },
+
   mounted() {
+
+
     this.FPSes.forEach((fps, idx) => {
       let x = 0;
       const $item = this.$refs.items[idx];
+      // const fItem = this.$refs.items[idx];
+      // console.log(fItem)
       // $item.textContent = fps;
 
       const T = new Timer({
         fps: fps,
         onTick: delta => {
           let wrap = document.querySelector(".wrap").clientWidth-80;
+
           if (x > wrap) {
             x = 0;
           }
-          // let myItem = document.querySelector(".item").offsetWidth;
-          // console.log(myItem)
 
           x += this.ITEM_SPEED * delta;
-          $item.style.transform = `translate3d(${x}px, 0, 0)`;
+          $item.style.transform = `translateX(${x}px)`;
 
         }
       });
@@ -108,20 +122,23 @@ export default {
       const idx = this.FPSes.length - 1;
       const fps = this.FPSes[idx];
 
-      let x = 0;
+      const firstItem = document.querySelectorAll(".item")[0].style.transform;
+      let val = parseFloat(firstItem.match(/-?\d+\.?\d*/));
+      let x = val;
       const $item = this.$refs.items[idx];
 
       const T = new Timer({
         fps: fps,
         onTick: delta => {
-          let wrap = document.querySelector(".wrap").clientWidth - 100;
+          let wrap = document.querySelector(".wrap").clientWidth-80;
+
           if (x > wrap) {
             x = 0;
           }
    
           x += this.ITEM_SPEED * delta;
-          $item.style.transform = `translate3d(${x}px, 0, 0)`;
-
+          
+          $item.style.transform = `translateX(${x}px)`;
         }
       });
 
