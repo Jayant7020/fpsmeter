@@ -27,20 +27,18 @@ function refreshPage(){
 <template>
     <div class="flex justify-around items-center ">
         <div class="mt-8">
-            <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> -->
-            <h2 class="text-7xl font-semibold text-[#236c7e]"><span class="text-[#fa9323] ">Play</span> And <span class="text-[#fa9323]">Run</span> <br/>Different FPS Test</h2><br/>
+            <h2 class="text-7xl font-semibold text-[#236c7e] animate-fade-right animate-duration-[2000ms] animate-delay-100"><span class="text-[#fa9323]">Play</span> And <span class="text-[#fa9323]">Run</span> <br/>Different FPS Test</h2><br/>
             <p class="text-2xl">Your Monitor Working On <span class="font-bold text-3xl"> {{ myFps }} </span> FPS </p>
-            <p class="mt-3 text-xl"><span class="font-bold"> Warning: </span> It often returns an incorrect FPS because sometimes <br/> an animation frame is skipped when your CPU is busy with other tasks.</p>
+            <p class="mt-3 text-xl"><span class="font-bold"> Warning: </span>  It often returns an incorrect FPS because sometimes <br/> an animation frame is skipped when your CPU is busy with other tasks.</p>
             <p class="mt-3 text-xl">Refresh Page To Get Exact FPS of Monitor</p>
             <div class="mt-4">
-                <button @click="refreshPage()" class="rounded-md py-2 px-5 bg-[#236c7e] text-white font-semibold text-lg">Refresh</button>
-                <!-- <button class="rounded-md py-1 px-3 ml-4 bg-[#236c7e] text-white font-semibold">Start</button> -->
+                <button @click="refreshPage()" class="rounded-md py-2 px-5 bg-[#236c7e] text-white font-semibold text-lg animate-shake animate-duration-[2000ms] animate-delay-100">Refresh</button>
             </div>
         </div>
         <div class="container">
           <div class="ball"></div>
         </div> 
-    </div>
+    </div><br/>
 </template>
 
 <style scoped>
@@ -49,76 +47,69 @@ function refreshPage(){
     position: relative;
     width: 300px;
     height: 300px;
-    /* margin: 0 auto; */
 }
 
 .container::before {
     position: absolute;
     content: "";
-    width: 50px;
-    height: 10px;
+    width: 70px;
+    height: 25px;
     left: 50%;
-    top: 100%;
+    top: 90%;
     transform: translateX(-50%);
-    background: #6d6d6d;
-    box-shadow: 0 0 30px #555, 0 0 30px #555;
+    background: #a5a5a5;
+    box-shadow: 0 0 30px #a5a5a5, 0 0 30px #a5a5a5;
     border-radius: 50%;
-    animation: shadow-animate 3s infinite;
+    animation: shadow-animate 5s infinite;
 }
 
 .container .ball {
     position: relative;
     margin: 0 auto;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     top: 0;
     background: #fa9323;
     border-radius: 50%;
     box-shadow: 0 0 10px #fa9323, 0 0 30px #fa9323;
-    animation: ball-animate 3s infinite;
+    animation: ball-animate 5s infinite;
 }
 
 @keyframes ball-animate {
     5% {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
     }
-
     20% {
-        height: 60px;
+        height: 120px;
     }
-
     30% {
-        width: 45px;
-        height: 60px;
+        width: 90px;
+        height: 120px;
     }
-
     50% {
-        width: 57px;
-        height: 35px;
-        transform: translateY(275px);
+        width: 114px;
+        height: 70px;
+        transform: translateY(175px);
     }
-
     75% {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
     }
 }
 
 @keyframes shadow-animate {
     25% {
-        width: 50px;
-        height: 10px;
+        width: 70px;
+        height: 25px;
     }
-
     50% {
-        width: 57px;
-        height: 10px;
+        width: 80px;
+        height: 25px;
     }
-
     75% {
-        width: 50px;
-        height: 10px;
+        width: 70px;
+        height: 25px;
     }
 }
 

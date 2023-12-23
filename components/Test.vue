@@ -2,8 +2,7 @@
   <div>
 
     <NewTest/>
-
-    <div  class="flex justify-center my-20">
+    <div  class="flex justify-center mt-20 mb-8">
         <div class="flex justify-center items-center mr-10">
            <p class="text-xl font-semibold">NUMBER OF TEST :</p>
            <span class="w-14 h-12 ml-4 border-2 border-black rounded-md flex justify-center items-center text-xl font-semibold"> {{ boxes }} </span>
@@ -38,23 +37,9 @@
         </div>
     </div>
 
-    <div class="wrap overflow-hidden bg-black mb-20 ">  
-       <!-- <p v-for="(fps, idx) in FPSes" class="text-white">
-        {{ fps }}
-      </p>
-      <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
-      -->
-    
-      <!-- <div class="flex"> 
-       <p v-for="(fps, idx) in FPSes" class="text-white">
-        {{ fps }}
-      </p>
-      <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
-     </div> -->
-     
-     <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item" src="~/assets/UFO.png"/>
+    <div class="wrap overflow-hidden bg-lime-600 mb-20 ">  
+     <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item w-28" src="~/assets/snail.png"/>
     </div>
-    
   </div>
 </template>
 
@@ -63,7 +48,7 @@ export default {
   data() {
     return {
       ITEM_SPEED: 50,
-      FPSes: [60,30,15],
+      FPSes: [],
       timers: [],
       boxes : 3,
       selectedValue:250,
@@ -72,36 +57,52 @@ export default {
   },
 
   mounted() {
+  
+      const getFPS = () =>
+      new Promise(resolve =>
+      requestAnimationFrame(t1 =>
+      requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))
+      )
+      ) 
+      getFPS().then((fpss)=>{
+        
+        if(fpss==Infinity || fpss < 65){
+          this.FPSes.push(60,30,15);
+        }else if(fpss > 110 && 130){
+          this.FPSes.push(120,60,30);
+        }else{
+          this.FPSes.push(60,30,15);
+        }
+
+      }).then(()=>{  this.myStart()  } )
+  },
 
 
-    this.FPSes.forEach((fps, idx) => {
+
+  methods: {
+
+    myStart(){
+      this.FPSes.forEach((fps, idx) =>  {
       let x = 0;
       const $item = this.$refs.items[idx];
-      // const fItem = this.$refs.items[idx];
-      // console.log(fItem)
-      // $item.textContent = fps;
 
       const T = new Timer({
         fps: fps,
         onTick: delta => {
           let wrap = document.querySelector(".wrap").clientWidth-80;
-
           if (x > wrap) {
             x = 0;
           }
-
           x += this.ITEM_SPEED * delta;
           $item.style.transform = `translateX(${x}px)`;
-
         }
       });
-
       this.timers.push(T);
       T.start();
     });
-  },
+    },
 
-  methods: {
+     
     incre() {
       if(this.boxes < 6){
       let inc = Math.floor(this.FPSes[this.FPSes.length-1]/2);
@@ -114,8 +115,11 @@ export default {
     },
     
     decre() {
-      this.FPSes.pop();
-      this.timers.pop().stop(); 
+      if(this.boxes>1){
+        this.boxes -= 1;
+        this.FPSes.pop();
+        this.timers.pop().stop(); 
+      }
     },
 
     startNewTimer() {
@@ -145,6 +149,7 @@ export default {
       this.timers.push(T);
       T.start();
     },
+    
     selectSource() {
      let arrowIcon = document.getElementById("arrowIcon");
      let arrowIcon2 = document.getElementById("arrowIcon2");
@@ -211,18 +216,6 @@ class Timer {
 </script>
 
 <style scoped>
-
-/* .shaper {
-  background: url('~/assets/img1.jpg') repeat 0 0 ;
-  width: 100%;
-  height: 110px;
-  animation: slide 5s linear infinite;
-}
-
-@keyframes slide {
-    from { background-position: 0 0; }
-    to { background-position: 893px 0px; }
-} */
 
 #selectField {
   width: 100%;
