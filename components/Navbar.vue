@@ -25,7 +25,6 @@ function colorMode() {
     document.documentElement.classList.add("dark")
     document.documentElement.classList.remove("light")
   }
-
 }
 </script>
 
@@ -33,7 +32,7 @@ function colorMode() {
   <div class="mx-auto bg-white  dark:bg-[#171717] drop-shadow-lg shadow-slate-100 dark:shadow-slate-300 dark:text-slate-800">
     <nav class="">
       <div class="container max-w-screen-xl m-auto flex justify-between sm:px-6 px-2 py-2">
-        <div class="self-center sm:text-3xl text-2xl font-semibold font-Bungee whitespace-nowrap text-[#236c7e]"><NuxtLink to="/" class="flex">Random</NuxtLink></div>
+        <div class="self-center sm:text-3xl text-2xl font-semibold font-Alkatra whitespace-nowrap text-[#236c7e]"><NuxtLink to="/" class="flex">FPSTESTER</NuxtLink></div>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto" id="navbar-sticky">
           <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <li class="block py-2 pl-3 pr-4 md:bg-transparent text-slate-800 dark:text-slate-300 md:hover:text-[#236c7e]" aria-current="page"><NuxtLink class="rounded-sm" activeClass="activenavlink" to="/">Home</NuxtLink></li>

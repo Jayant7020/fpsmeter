@@ -1,11 +1,10 @@
 <template>
   <div>
-
     <NewTest/>
-    <div  class="flex justify-center mt-20 mb-8">
-        <div class="flex justify-center items-center mr-10">
+    <div  class="flex md:flex-row flex-col justify-center mt-20 mb-8">
+        <div class="flex justify-center items-center md:mr-10">
            <p class="text-xl font-semibold">NUMBER OF TEST :</p>
-           <span class="w-14 h-12 ml-4 border-2 border-black rounded-md flex justify-center items-center text-xl font-semibold"> {{ boxes }} </span>
+           <span class="w-14 h-12 ml-4 border-2 border-black dark:border-slate-300 rounded-md flex justify-center items-center text-xl font-semibold"> {{ boxes }} </span>
            <div class="flex flex-col ml-4">
             <button class="w-10 h-11 mb-[3px] text-white rounded-sm text-2xl border-black bg-[#236c7e]" @click="incre()">+</button>
             <button class="w-10 h-11 text-white rounded-sm text-2xl border-black bg-[#236c7e]" @click="decre()">-</button> 
@@ -19,7 +18,7 @@
           <div class="w-[150px]" @click="selectSource();  myfunc()">
                <div class=" bg-[#d9dada]  dark:bg-[#3e3e3e] text-slate-900 dark:text-slate-300" id="selectField" @click="isOpen = !isOpen">
                   <div class="flex items-center">
-                  <p class="sm:ml-4 ml-2 md:text-lg text-sm" id="selectText">{{ selectedValue }}</p>
+                  <p class="sm:ml-4 ml-2 font-semibold md:text-lg text-sm" id="selectText">{{ selectedValue }}</p>
                   </div>
                   <div>
                   <img src="~/assets/arrow.png" id="arrowIcon" alt="img" class="myarrow block dark:hidden ml-2"/> 
@@ -27,18 +26,23 @@
                   </div>
                </div>
             	<ul id="list" :class="{ 'hidden': isOpen }" class="absolute z-50 w-[150px] alloptions bg-[#d9dada] dark:bg-[#3e3e3e] text-slate-900 dark:text-slate-300">
-            	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">250</p></li>
-            	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">350</p></li>
-            	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm">450</p></li>
-            	<li @click="changeSpeed(750)" class="option hover:bg-[#236c7e] hover:rounded-b-[6px]"><p class="md:text-lg text-sm">750</p></li>
+            	<li @click="changeSpeed(250)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm font-semibold">250</p></li>
+            	<li @click="changeSpeed(350)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm font-semibold">350</p></li>
+            	<li @click="changeSpeed(450)" class="option hover:bg-[#236c7e]"><p class="md:text-lg text-sm font-semibold">450</p></li>
+            	<li @click="changeSpeed(750)" class="option hover:bg-[#236c7e] hover:rounded-b-[6px]"><p class="md:text-lg text-sm font-semibold">750</p></li>
             	</ul>
             </div> 
         </div>
         </div>
     </div>
 
-    <div class="wrap overflow-hidden bg-lime-600 mb-20 ">  
-     <img  v-for="(fps, idx) in FPSes" :key="idx" ref="items" class="item w-28" src="~/assets/snail.png"/>
+    <div class="wrap overflow-hidden bg-lime-600 mb-20">  
+     <div v-for="(fps, idx) in FPSes" class="flex justify-start items-center">
+      
+      <p class="font-bold text-4xl text-slate-900">{{ fps }}</p>
+      <img :key="idx" ref="items" class="item w-28 z-50" src="~/assets/snail.png"/>
+     
+    </div>
     </div>
   </div>
 </template>
@@ -187,8 +191,8 @@ export default {
       arrowIcon2.classList.toggle("rotate");   
     }
   }
-
 };
+
 
 class Timer {
   constructor(options) {

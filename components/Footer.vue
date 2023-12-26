@@ -6,8 +6,8 @@
   <div class="container mx-auto px-4">
     <div class="flex flex-wrap text-left lg:text-left">
       <div class="w-full lg:w-6/12 px-4">
-        <h4 class="text-3xl font-semibold text-blueGray-700"><NuxtLink to="/">Random</NuxtLink></h4>
-        <h5 class="text-sm mt-0 mb-2 text-blueGray-600">
+        <h4 class="text-3xl font-semibold font-Alkatra"><NuxtLink to="/">FPSTESTER</NuxtLink></h4>
+        <h5 class="mt-0 mb-2 text-lg font-bold font-Alkatra">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, praesentium.
         </h5>
         <div class="mt-6 lg:mb-0 mb-6 flex">
@@ -20,30 +20,30 @@
       <div class="w-full lg:w-6/12 px-4">
         <div class="flex flex-wrap items-top mb-6">
           <div class="w-full lg:w-4/12 px-4 ml-auto">
-            <span class="block uppercase text-blueGray-500 text-sm font-bold mb-2">Useful Links</span>
+            <span class="block uppercase text-lg font-bold mb-2">Useful Links</span>
             <ul class="list-unstyled">
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">About Us</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/about">About Us</NuxtLink></p>
               </li>
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">FAQs</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/faqs">FAQ's</NuxtLink></p>
               </li>
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">Contact Us</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/contact">Contact Us</NuxtLink></p>
               </li>
             </ul>
           </div>
           <div class="w-full lg:w-4/12 px-4">
-            <span class="block uppercase text-blueGray-500 text-sm font-bold mb-2">Other Resources</span>
+            <span class="block uppercase text-blueGray-500 text-lg font-bold mb-2">Other Resources</span>
             <ul class="list-unstyled">
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">Terms & Conditions</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/termscondition">Terms & Conditions</NuxtLink></p>
               </li>
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">Cookie Policy</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/cookiepolicy">Cookie Policy</NuxtLink></p>
               </li>
               <li>
-                <a class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm">Privacy Policy</a>
+                <p class="font-bold block pb-2 text-sm"><NuxtLink class="rounded-sm" to="/privacypolicy">Privacy Policy</NuxtLink></p>
               </li>
             </ul>
           </div>
@@ -53,9 +53,8 @@
     <hr class="my-6 border-blueGray-300">
     <div class="flex flex-wrap items-center md:justify-between justify-center">
       <div class="w-full md:w-4/12 px-4 mx-auto text-center">
-        <div class="text-sm text-blueGray-500 font-semibold py-1">
-          <span class="text-sm sm:text-center">Copyright © 2023 <a href="https://Google.com/" class="hover:underline">FPSMETER.COM</a> All rights reserved.</span>
-
+        <div class="text-sm text-blueGray-500 font-bold py-1">
+          <span class="text-sm sm:text-center">Copyright © 2023 <a href="https://Google.com/" class="hover:underline">FPSTESTER.COM</a> All rights reserved.</span>
         </div>
       </div>
     </div>

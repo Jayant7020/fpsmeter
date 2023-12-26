@@ -10,10 +10,17 @@ export default {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'Bungee': 'Bungee, sans-serif',
+        'Alkatra': 'Alkatra, sans-serif',
+        'Amaranth': 'Amaranth, sans-serif',
+      },
+    },
   },
   plugins: [
-    require('tailwindcss-animated')
+    require('tailwindcss-animated'),
+    require('@tailwindcss/typography')
   ],
 }
 

@@ -25,17 +25,17 @@ function refreshPage(){
 </script>
 
 <template>
-    <div class="flex justify-around items-center ">
+    <div class="flex justify-around items-center">
         <div class="mt-8">
-            <h2 class="text-7xl font-semibold text-[#236c7e] animate-fade-right animate-duration-[2000ms] animate-delay-100"><span class="text-[#fa9323]">Play</span> And <span class="text-[#fa9323]">Run</span> <br/>Different FPS Test</h2><br/>
-            <p class="text-2xl">Your Monitor Working On <span class="font-bold text-3xl"> {{ myFps }} </span> FPS </p>
+            <h2 class="text-7xl font-semibold font-Amaranth text-[#236c7e] animate-fade-right animate-duration-[2000ms] animate-delay-100"><span class="text-[#fa9323]">Play</span> And <span class="text-[#fa9323]">Run</span> <br/>Different FPS Test</h2><br/>
+            <p class="text-2xl">Your Screen Working On <span class="font-bold text-3xl"> {{ myFps }} </span> FPS </p>
             <p class="mt-3 text-xl"><span class="font-bold"> Warning: </span>  It often returns an incorrect FPS because sometimes <br/> an animation frame is skipped when your CPU is busy with other tasks.</p>
-            <p class="mt-3 text-xl">Refresh Page To Get Exact FPS of Monitor</p>
+            <p class="mt-3 text-xl">Refresh Page To Get Exact FPS of Screen</p>
             <div class="mt-4">
                 <button @click="refreshPage()" class="rounded-md py-2 px-5 bg-[#236c7e] text-white font-semibold text-lg animate-shake animate-duration-[2000ms] animate-delay-100">Refresh</button>
             </div>
         </div>
-        <div class="container">
+        <div class="container md:block hidden">
           <div class="ball"></div>
         </div> 
     </div><br/>
