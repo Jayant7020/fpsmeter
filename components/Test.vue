@@ -3,7 +3,7 @@
     <NewTest/>
     <div  class="flex md:flex-row flex-col justify-center mt-20 mb-8">
         <div class="flex justify-center items-center md:mr-10">
-           <p class="text-xl font-semibold">NUMBER OF TEST :</p>
+           <p class="text-xl font-semibold font-Mukta">Number Of Test :</p>
            <span class="w-14 h-12 ml-4 border-2 border-black dark:border-slate-300 rounded-md flex justify-center items-center text-xl font-semibold"> {{ boxes }} </span>
            <div class="flex flex-col ml-4">
             <button class="w-10 h-11 mb-[3px] text-white rounded-sm text-2xl border-black bg-[#236c7e]" @click="incre()">+</button>
@@ -11,9 +11,8 @@
            </div>
         </div>
 
-
        <div class="flex justify-center items-center ml-8">
-           <p class="mr-4 text-xl font-semibold">SPEED :</p>
+           <p class="mr-4 text-xl font-semibold font-Mukta">Speed :</p>
         <div id="myselector" class="selector flex flex-col items-center justify-center my-8">
           <div class="w-[150px]" @click="selectSource();  myfunc()">
                <div class=" bg-[#d9dada]  dark:bg-[#3e3e3e] text-slate-900 dark:text-slate-300" id="selectField" @click="isOpen = !isOpen">
@@ -36,10 +35,11 @@
         </div>
     </div>
 
-    <div class="wrap overflow-hidden bg-lime-600 mb-20">  
+    <div class="wrap overflow-hidden bg-[#39adca] dark:bg-[#236c7e] mb-20">  
+      <!-- bg-lime-600 -->
      <div v-for="(fps, idx) in FPSes" class="flex justify-start items-center">
       
-      <p class="font-bold text-4xl text-slate-900">{{ fps }}</p>
+      <p class="font-bold text-4xl text-slate-900">{{ fps }}<sub class="text-sm">FPS</sub></p>
       <img :key="idx" ref="items" class="item w-28 z-50" src="~/assets/snail.png"/>
      
     </div>
@@ -93,10 +93,18 @@ export default {
       const T = new Timer({
         fps: fps,
         onTick: delta => {
-          let wrap = document.querySelector(".wrap").clientWidth-80;
-          if (x > wrap) {
+          // let wrap = document.querySelector(".wrap").clientWidth-80;
+          // if (x > wrap) {
+          //   x = 0;
+          // }
+
+          let wrap = document.querySelector(".wrap");
+          if(wrap !== null){
+            if (x > wrap.clientWidth-80) {
             x = 0;
+            }
           }
+
           x += this.ITEM_SPEED * delta;
           $item.style.transform = `translateX(${x}px)`;
         }

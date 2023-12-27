@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <footer class="mt-auto relative pt-8 pb-6 bg-gradient-to-r from-[#236c7e] via-[#3ebddd] to-[#236c7e]">
+    <footer class="mt-auto relative pt-8 pb-6 bg-gradient-to-r from-[#3c889b] via-[#3ebddd] to-[#236c7e]">
   <div class="container mx-auto px-4">
     <div class="flex flex-wrap text-left lg:text-left">
       <div class="w-full lg:w-6/12 px-4">

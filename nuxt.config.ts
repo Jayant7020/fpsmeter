@@ -4,7 +4,8 @@ export default defineNuxtConfig({
     families: {
       Bungee:[400],
       Alkatra:[600],
-      Amaranth:[700]
+      Amaranth:[700],
+      Mukta:[600]
     }
 }],],
   devtools: { enabled: true },

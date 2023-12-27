@@ -25,13 +25,13 @@ useHead({
 <template>
   <div class="dark:text-slate-300 text-slate-900 dark:bg-[#121212] bg-white">
    
-    <div class="max-w-screen-lg items-center m-auto p-3 flex justify-between">
-      <div class="w-1/2 mr-10">
-          <h2 class="text-6xl font-semibold text-[#236c7e] mb-6 font-Amaranth">Frequently Asked Question's</h2>
+    <div class="max-w-screen-lg items-center m-auto p-3 flex md:flex-row flex-col justify-between">
+      <div class="md:w-1/2 md:mr-10 text-center">
+          <h2 class="md:text-6xl text-3xl font-semibold text-[#236c7e] mb-6 font-Amaranth">Frequently Asked Question's</h2>
           <p class="text-lg">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga eaque velit quasi soluta doloremque, fugiat ipsam maiores labore nam totam.</p>
       </div>  
 
-    <div class="space-y-4 my-10 w-1/2">
+    <div class="space-y-4 my-10 md:w-1/2 w-full">
 
       <details v-for="faq in faqs" :key="faq" class="py-2 px-4 border-l-4 border-[#236c7e] dark:bg-[#222222] bg-[#ececec] group">
         <summary class="flex items-center justify-between cursor-pointer py-3">
@@ -48,10 +48,7 @@ useHead({
       </details>
 
     </div>
-
     </div>
-
-
 
   </div>
 </template>

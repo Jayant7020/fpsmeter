@@ -15,6 +15,7 @@ export default {
         'Bungee': 'Bungee, sans-serif',
         'Alkatra': 'Alkatra, sans-serif',
         'Amaranth': 'Amaranth, sans-serif',
+        'Mukta':'Mukta,  sans-serif'
       },
     },
   },

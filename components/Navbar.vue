@@ -32,7 +32,9 @@ function colorMode() {
   <div class="mx-auto bg-white  dark:bg-[#171717] drop-shadow-lg shadow-slate-100 dark:shadow-slate-300 dark:text-slate-800">
     <nav class="">
       <div class="container max-w-screen-xl m-auto flex justify-between sm:px-6 px-2 py-2">
+
         <div class="self-center sm:text-3xl text-2xl font-semibold font-Alkatra whitespace-nowrap text-[#236c7e]"><NuxtLink to="/" class="flex">FPSTESTER</NuxtLink></div>
+        
         <div class="items-center justify-between hidden w-full md:flex md:w-auto" id="navbar-sticky">
           <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <li class="block py-2 pl-3 pr-4 md:bg-transparent text-slate-800 dark:text-slate-300 md:hover:text-[#236c7e]" aria-current="page"><NuxtLink class="rounded-sm" activeClass="activenavlink" to="/">Home</NuxtLink></li>
@@ -85,9 +87,10 @@ function colorMode() {
               <div class="w-4 h-1 bg-slate-500 dark:bg-slate-400 mb-1"></div>
               <div class="w-3 h-1 bg-slate-500 dark:bg-slate-400 mb-1"></div>
               <div class="w-4 h-1 bg-slate-500 dark:bg-slate-400"></div>
+              
               <div class="absolute top-0 -right-full h-screen w-6/12  dark:bg-[#121212] bg-white border opacity-0 group-focus:right-0 group-focus:opacity-100 transition-all duration-300 z-[99]">
                 <ul class="flex flex-col w-full cursor-pointer pt-8 text-slate-800 rounded dark:text-slate-400 text-lg font-medium">
-                  <li class="py-3 self-center sm:text-3xl text-2xl font-semibold font-Bungee whitespace-nowrap text-[#236c7e]"><NuxtLink to="/" class="flex">FPS-METER</NuxtLink></li>
+                  <li class="py-3 self-center sm:text-3xl text-2xl font-semibold font-Alkatra whitespace-nowrap text-[#236c7e]"><NuxtLink to="/" class="flex">FPSTESTER</NuxtLink></li>
                   <li class="py-4 px-10 w-full flex"><NuxtLink to="/">Home</NuxtLink></li>
                   <li class="py-4 px-10 w-full flex"><NuxtLink to="/about">About</NuxtLink></li>
                   <li class="py-4 px-10 w-full flex"><NuxtLink to="/contact">Contact</NuxtLink></li>
